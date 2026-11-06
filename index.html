@@ -8,12 +8,10 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <title>Удостоверение личности</title>
 
-  <!-- PWA Manifest & Icons Link -->
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icon-192.png">
 
   <style>
-    /* 1. СТИЛИ И СБРОС */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -49,7 +47,6 @@
       align-items: center;
       justify-content: center;
       padding: 0 16px;
-      border-bottom: 1px solid #f2f2f7;
       z-index: 10;
     }
 
@@ -68,7 +65,7 @@
     }
 
     .header-title {
-      font-size: 17px;
+      font-size: 18px;
       font-weight: 600;
       color: #000000;
     }
@@ -78,7 +75,7 @@
       flex: 1;
       display: flex;
       flex-direction: column;
-      padding: 16px;
+      padding: 12px 16px 20px 16px;
       max-width: 500px;
       margin: 0 auto;
       width: 100%;
@@ -88,21 +85,21 @@
     .tab-switcher {
       display: flex;
       background-color: #eeeeee;
-      border-radius: 10px;
-      padding: 2px;
-      margin-bottom: 20px;
+      border-radius: 12px;
+      padding: 3px;
+      margin-bottom: 16px;
     }
 
     .tab-btn {
       flex: 1;
-      padding: 8px 0;
+      padding: 9px 0;
       text-align: center;
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 500;
       border: none;
       background: transparent;
       color: #666666;
-      border-radius: 8px;
+      border-radius: 9px;
       cursor: pointer;
       transition: all 0.2s ease;
     }
@@ -111,7 +108,7 @@
       background-color: #ffffff;
       color: #000000;
       font-weight: 600;
-      box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.08);
+      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.06);
     }
 
     /* Содержимое вкладок */
@@ -125,17 +122,16 @@
       display: flex;
     }
 
-    /* ВКЛАДКА 1: ДОКУМЕНТ */
+    /* ВКЛАДКА 1: ДОКУМЕНТ без обводок */
     .image-upload-wrapper {
       width: 100%;
       min-height: 220px;
-      border: 2px dashed #d1d1d6;
-      border-radius: 14px;
+      border-radius: 12px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background-color: #fafafa;
+      background-color: #ffffff;
       cursor: pointer;
       overflow: hidden;
       position: relative;
@@ -147,8 +143,11 @@
       flex-direction: column;
       align-items: center;
       color: #8e8e93;
-      padding: 20px;
+      padding: 40px 20px;
       text-align: center;
+      border: 1.5px dashed #d1d1d6;
+      border-radius: 12px;
+      width: 100%;
     }
 
     .upload-placeholder svg {
@@ -161,7 +160,7 @@
       height: auto;
       object-fit: contain;
       display: none;
-      border-radius: 12px;
+      border-radius: 8px;
     }
 
     #fileInput {
@@ -173,19 +172,19 @@
       display: flex;
       flex-direction: column;
       gap: 12px;
-      padding-bottom: 12px;
+      padding-bottom: 8px;
     }
 
     .btn {
       width: 100%;
-      height: 50px;
+      height: 52px;
       border-radius: 12px;
       font-size: 16px;
       font-weight: 600;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 10px;
       cursor: pointer;
       border: 1px solid transparent;
       transition: opacity 0.15s ease;
@@ -345,7 +344,7 @@
       color: #000000;
     }
 
-    /* TOAST УВЕДОМЛЕНИЕ */
+    /* TOAST */
     .toast {
       position: fixed;
       bottom: 40px;
@@ -368,7 +367,6 @@
       opacity: 1;
     }
 
-    /* СТИЛИ ДЛЯ ПЕЧАТИ / PDF */
     @media print {
       .app-header, .tab-switcher, .actions-group, .copy-btn, .modal-overlay {
         display: none !important;
@@ -383,9 +381,6 @@
       .tab-content {
         display: block !important;
       }
-      .image-upload-wrapper {
-        border: none;
-      }
     }
   </style>
 </head>
@@ -394,17 +389,16 @@
   <!-- Шапка -->
   <header class="app-header">
     <button class="back-btn" onclick="window.location.href='https://kaspi.kz'" aria-label="Назад">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="19" y1="12" x2="5" y2="12"></line>
-        <polyline points="12 19 5 12 12 5"></polyline>
+      <!-- Оригинальная иконка стрелки Kaspi -->
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0055D4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M15 18l-6-6 6-6"/>
       </svg>
     </button>
     <h1 class="header-title">Удостоверение личности</h1>
   </header>
 
-  <!-- Основная часть -->
   <main class="container">
-    <!-- Табы -->
+    <!-- Переключатель вкладок -->
     <nav class="tab-switcher">
       <button class="tab-btn active" onclick="switchTab('doc')">Документ</button>
       <button class="tab-btn" onclick="switchTab('req')">Реквизиты</button>
@@ -513,7 +507,7 @@
     </section>
   </main>
 
-  <!-- Модальное окно (Bottom Sheet) -->
+  <!-- Bottom Sheet -->
   <div id="modalOverlay" class="modal-overlay" onclick="closeModal(event)">
     <div class="bottom-sheet" onclick="event.stopPropagation()">
       <button class="close-btn" onclick="closeModal()" aria-label="Закрыть">✕</button>
@@ -521,10 +515,9 @@
       <p class="sheet-subtitle">Покажите QR-код сотруднику</p>
       
       <div class="qr-container">
-        <!-- Генерация динамического векторного QR-кода -->
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29 29" shape-rendering="crispEdges">
           <path fill="#ffffff" d="M0 0h29v29H0z"/>
-          <path fill="#000000" d="M0 0h7v7H0zm1 1v5h5V1zM2 2h3v3H2zm7 0h2v1H9zm3 0h1v2h-1zm2 0h2v1h-2zm4 0h7v7h-7zm1 1v5h5V3zm1 1h3v3h-3zM0 9h1v2H0zm2 0h3v1H2zm4 0h1v1H6zm4 0h3v1h-3zm5 0h1v1h-1zm2 0h2v1h-2zm0 2h1v1h-1zm-8 1h1v1h-1zm3 0h2v1h-2zm6 0h1v1h-1zm-17 2h2v1H0zm4 0h1v1H4zm5 0h1v1H9zm3 0h1v1h-1zm3 0h2v1h-2zm-14 2h1v1H1zm3 0h1v1H4zm4 0h2v1H8zm5 0h1v1h-1zm2 0h1v1h-1zm2 0h1v1h-1zm2 0h2v1h-2zm-19 2h7v7H0zm1 1v5h5v-5zm1 1h3v3H2zm8 0h1v1h-1zm3 0h1v2h-1zm2 0h3v1h-3zm-4 2h1v1h-1zm3 0h2v1h-2zm2 0h1v1h-1zm-6 2h2v1h-2zm3 0h1v1h-1zm3 0h2v1h-2z"/>
+          <path fill="#000000" d="M0 0h7v7H0zm1 1v5h5V1zM2 2h3v3H2zm7 0h2v1H9zm3 0h1v2h-1zm2 0h2v1h-2zm4 0h7v7h-7zm1 1v5h5V3zm1 1h3v3h-3zM0 9h1v2H0zm2 0h3v1H2zm4 0h1v1H6zm4 0h3v1h-3zm5 0h1v1h-1zm2 0h2v1h-2zm0 2h1v1h-1zm-8 1h1v1h-1zm3 0h2v1h-2zm6 0h1v1h-1zm-17 2h2v1H0zm4 0h1v1H4zm5 0h1v1H9zm3 0h1v1h-1zm3 0h2v1h-2zm-14 2h1v1H1zm3 0h1v1H4zm4 0h8v1H8zm5 0h1v1h-1zm2 0h1v1h-1zm2 0h1v1h-1zm2 0h2v1h-2zm-19 2h7v7H0zm1 1v5h5v-5zm1 1h3v3H2zm8 0h1v1h-1zm3 0h1v2h-1zm2 0h3v1h-3zm-4 2h1v1h-1zm3 0h2v1h-2zm2 0h1v1h-1zm-6 2h2v1h-2zm3 0h1v1h-1zm3 0h2v1h-2z"/>
         </svg>
       </div>
 
@@ -532,12 +525,9 @@
     </div>
   </div>
 
-  <!-- Toast -->
   <div id="toast" class="toast">Скопировано в буфер обмена</div>
 
-  <!-- JS ЛОГИКА -->
   <script>
-    // 1. Переключение вкладок
     function switchTab(tabName) {
       document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
       document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
@@ -551,7 +541,6 @@
       }
     }
 
-    // 2. Работа с фотографией документа
     function triggerFileInput() {
       document.getElementById('fileInput').click();
     }
@@ -577,7 +566,6 @@
       placeholder.style.display = 'none';
     }
 
-    // 3. Сохранение и загрузка полей реквизитов
     const fieldKeys = ['fio', 'iin', 'birth', 'docnum', 'issue', 'expiry'];
 
     function saveField(key, value) {
@@ -585,13 +573,11 @@
     }
 
     function loadData() {
-      // Восстановление фото
       const savedImg = localStorage.getItem('kaspi_doc_image');
       if (savedImg) {
         displayImage(savedImg);
       }
 
-      // Восстановление реквизитов
       fieldKeys.forEach(key => {
         const savedVal = localStorage.getItem('kaspi_req_' + key);
         if (savedVal !== null) {
@@ -601,14 +587,12 @@
       });
     }
 
-    // 4. Копирование в буфер обмена
     function copyField(inputId) {
       const input = document.getElementById(inputId);
       if (input && input.value) {
         navigator.clipboard.writeText(input.value).then(() => {
           showToast();
         }).catch(err => {
-          // Запасной вариант для старых браузеров
           input.select();
           document.execCommand('copy');
           showToast();
@@ -624,7 +608,6 @@
       }, 2000);
     }
 
-    // 5. Модальное окно (Bottom Sheet)
     function openModal() {
       document.getElementById('modalOverlay').classList.add('active');
     }
@@ -633,7 +616,6 @@
       document.getElementById('modalOverlay').classList.remove('active');
     }
 
-    // 6. Поделиться или Печать/PDF
     function shareOrPrint() {
       if (navigator.share) {
         const activeTab = document.getElementById('tab-doc').classList.contains('active') ? 'Документ' : 'Реквизиты';
@@ -659,14 +641,12 @@
       return text;
     }
 
-    // 7. Регистрация Service Worker для PWA
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('sw.js').catch(() => {});
       });
     }
 
-    // Инициализация данных при загрузке страницы
     window.addEventListener('DOMContentLoaded', loadData);
   </script>
 </body>

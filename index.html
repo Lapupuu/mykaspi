@@ -2,13 +2,13 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Удостоверение личности</title>
 
-  <!-- PWA и цвета -->
+  <!-- PWA и цвета (убирает синие полосы в браузерах и PWA) -->
   <link rel="manifest" href="./manifest.json">
   <meta name="theme-color" content="#ffffff">
-  <meta name="background-color" content="#ffffff">
+  <meta name="msapplication-navbutton-color" content="#ffffff">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Удостоверение">
@@ -22,13 +22,22 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    html, body {
+    html {
+      background-color: #ffffff;
+      height: 100%;
+    }
+
+    body {
       background-color: #ffffff;
       color: #111111;
       min-height: 100vh;
+      min-height: -webkit-fill-available;
       display: flex;
       justify-content: center;
       align-items: flex-start;
+      /* Отступы под шторки/вырезы смартфонов */
+      padding-top: env(safe-area-inset-top);
+      padding-bottom: env(safe-area-inset-bottom);
     }
 
     .app-container {
@@ -130,23 +139,22 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      width: 100%;
     }
 
     .document-card-container {
-      width: 100%;
-      border-radius: 16px;
-      overflow: hidden;
-      background-color: #ffffff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      cursor: pointer;
-      border: 1px dashed #cccccc;
-      transition: border-color 0.2s ease;
-    }
-
+     width: 100%;
+     border-radius: 16px;
+     overflow: hidden;
+     background-color: transparent;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     position: relative;
+     cursor: pointer;
+     border: 1px dashed #cccccc;
+     transition: border-color 0.2s ease;
+}
     .document-card-container.has-image {
       border: none;
       background: transparent;
@@ -174,11 +182,11 @@
     .uploaded-img {
       width: 100%;
       height: auto;
-      max-height: 70vh;
-      object-fit: contain;
+      max-width: 100%;
       display: block;
       border-radius: 12px;
-    }
+      object-fit: contain;
+}
 
     #fileInput {
       display: none;
@@ -575,7 +583,6 @@
   <div class="toast" id="toast">Скопировано в буфер обмена</div>
 
   <script>
-    // Переключение вкладок
     function switchTab(tabName) {
       document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
       document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
@@ -589,7 +596,6 @@
       }
     }
 
-    // Загрузка фото
     function triggerUpload() {
       document.getElementById('fileInput').click();
     }
@@ -610,7 +616,6 @@
       }
     }
 
-    // Сохранение и загрузка текстовых полей
     const fields = ['fio', 'iin', 'dob', 'docnum', 'issued', 'expiry'];
 
     function saveData() {
@@ -621,7 +626,6 @@
     }
 
     function loadSavedData() {
-      // Фото
       const savedImg = localStorage.getItem('docImage');
       if (savedImg) {
         document.getElementById('docImage').src = savedImg;
@@ -630,7 +634,6 @@
         document.getElementById('cardContainer').classList.add('has-image');
       }
 
-      // Текстовые поля
       fields.forEach(field => {
         const savedVal = localStorage.getItem(`req_${field}`);
         if (savedVal !== null) {
@@ -639,54 +642,7 @@
       });
     }
 
-    // Копирование в буфер
     function copyValue(id) {
       const input = document.getElementById(id);
       if (input && input.value) {
-        navigator.clipboard.writeText(input.value).then(() => {
-          showToast('Скопировано в буфер обмена');
-        });
-      }
-    }
-
-    function showToast(msg) {
-      const toast = document.getElementById('toast');
-      toast.innerText = msg;
-      toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 2000);
-    }
-
-    // Модалка QR
-    function openQrModal() {
-      document.getElementById('qrModal').classList.add('active');
-    }
-
-    function closeQrModal(e) {
-      document.getElementById('qrModal').classList.remove('active');
-    }
-
-    // Симуляция / экспорт в PDF
-    function shareDocument(type) {
-      if (navigator.share) {
-        navigator.share({
-          title: 'Удостоверение личности',
-          text: type === 'doc' ? 'Документ в формате PDF' : 'Реквизиты удостоверения личности',
-          url: window.location.href,
-        }).catch(() => {});
-      } else {
-        window.print();
-      }
-    }
-
-    // Регистрация Service Worker
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./sw.js')
-        .then(() => console.log('SW зарегистрирован'))
-        .catch((err) => console.log('Ошибка SW:', err));
-    }
-
-    // Инициализация при загрузке
-    window.onload = loadSavedData;
-  </script>
-</body>
-</html>
+        navigator.clipboard.writeText(input

@@ -1,0 +1,2 @@
+# mykaspi
+kaspi-udo.projecttest
